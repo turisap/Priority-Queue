@@ -15,7 +15,12 @@ module.exports = (env = {}) => {
                     exclude: /node_modules/,
                     use: ["babel-loader", 'eslint-loader']
                 },
-            ]
+
+            ],
+        },
+        node : {
+            fs : "empty",
+            child_process : "empty"
         },
         watch : true
     }

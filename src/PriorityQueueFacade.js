@@ -1,6 +1,7 @@
 import Queue from './Queue';
 
 class PriorityQueueFacade {
+
     constructor(initialValues = []) {
         this.queue = new Queue(initialValues);
     }
@@ -9,7 +10,8 @@ class PriorityQueueFacade {
      *  Sets queue's array to []
      */
     clear() {
-
+        this.queue.clear();
+        console.log(process.env.PRODUCTION);
     }
 
     /**

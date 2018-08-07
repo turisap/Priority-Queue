@@ -7,6 +7,10 @@ class PriorityQueue {
         return this.queue.length;
     }
 
+    clear() {
+        if(this.queue) this.queue = [];
+    }
+
     buildMaxHeap(values) {
         this.queue = values;
     }
