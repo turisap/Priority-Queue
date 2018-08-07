@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = (env = {}) => {
 
     return {
-        entry: ['babel-polyfill', './PriorityQueueFacade'],
+        entry: ['babel-polyfill', './index.js'],
         output: {
             path: path.resolve(__dirname, './dist'),
             filename: 'bundle.js'
@@ -17,5 +17,6 @@ module.exports = (env = {}) => {
                 },
             ]
         },
+        watch : true
     }
 };

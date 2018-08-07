@@ -1,13 +1,20 @@
 class PriorityQueue {
-    constructor(values, maxHeap) {
-        this._init(values, maxHeap);
+    constructor(values) {
+        this._init(values);
     }
 
-    _init(values, maxHeap) {
-        if(maxHeap) this.strategy = 'max';
-        if(!maxHeap) this.strategy = 'min';
-        if(!values.length) console.log(`An empty ${this.strategy} Priority Queue has been created`);
-        if(values.length) console.log(`A ${this.strategy} Priority Queue has been created`);
+    size() {
+        return this.queue.length;
+    }
+
+    buildMaxHeap(values) {
+        this.queue = values;
+    }
+
+    _init(values) {
+        if(!values.length) console.log('An empty Priority Queue has been created');
+        if(values.length) console.log('A Priority Queue has been created');
+        this.buildMaxHeap(values);
     }
 }
 

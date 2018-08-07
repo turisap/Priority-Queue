@@ -1,8 +1,8 @@
 import Queue from './Queue';
 
 class PriorityQueueFacade {
-    constructor(initialValues = [], maxHeap) {
-        this.queue = new Queue(initialValues, maxHeap);
+    constructor(initialValues = []) {
+        this.queue = new Queue(initialValues);
     }
 
     /**
@@ -44,7 +44,7 @@ class PriorityQueueFacade {
      * Returns the number of items in the data structure
      */
     size() {
-
+        console.log(this.queue.size());
     }
 }
 
