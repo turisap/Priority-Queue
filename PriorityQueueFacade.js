@@ -22,7 +22,7 @@ class PriorityQueueFacade {
     /**
      * Gets the smallest/biggest item and removes it from the queue
      */
-    dequeue(item) {
+    dequeue() {
 
     }
 
