@@ -1,7 +1,7 @@
 import Queue from './src/PriorityQueueFacade';
+import dotenv from 'dotenv';
 
-// Loadinng ENV variables
-require('dotenv').config();
+dotenv.config({ silent: true });
 
 const queue = new Queue([2,4,5]);
 

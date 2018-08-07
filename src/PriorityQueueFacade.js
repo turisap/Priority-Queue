@@ -11,7 +11,6 @@ class PriorityQueueFacade {
      */
     clear() {
         this.queue.clear();
-        console.log(process.env.PRODUCTION);
     }
 
     /**

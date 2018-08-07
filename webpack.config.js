@@ -6,7 +6,7 @@ module.exports = (env = {}) => {
         entry: ['babel-polyfill', './index.js'],
         output: {
             path: path.resolve(__dirname, './dist'),
-            filename: 'bundle.js'
+            filename: 'b.js'
         },
         module: {
             rules: [
@@ -20,7 +20,8 @@ module.exports = (env = {}) => {
         },
         node : {
             fs : "empty",
-            child_process : "empty"
+            child_process : "empty",
+            process : true
         },
         watch : true
     }
