@@ -3,10 +3,10 @@ const path = require('path');
 module.exports = (env = {}) => {
 
     return {
-        entry: ['babel-polyfill', './PriorityQueueFacade'],
+        entry: ['babel-polyfill', './index.js'],
         output: {
             path: path.resolve(__dirname, './dist'),
-            filename: 'bundle.js'
+            filename: 'b.js'
         },
         module: {
             rules: [
@@ -15,7 +15,14 @@ module.exports = (env = {}) => {
                     exclude: /node_modules/,
                     use: ["babel-loader", 'eslint-loader']
                 },
-            ]
+
+            ],
         },
+        node : {
+            fs : "empty",
+            child_process : "empty",
+            process : true
+        },
+        watch : true
     }
 };

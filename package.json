@@ -4,7 +4,7 @@
   "description": "A priority queue data structure which can accept arrays of ",
   "main": "PriorityQueueFacade.js",
   "scripts": {
-    "build": "webpack --env.production --mode=production"
+    "build": "webpack --env.development --mode=development"
   },
   "repository": {
     "type": "git",
@@ -32,5 +32,9 @@
     "eslint-plugin-import": "^2.13.0",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "json-loader": "^0.5.7"
   }
 }
