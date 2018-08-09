@@ -1,0 +1,40 @@
+{
+  "name": "priorityqueue",
+  "version": "1.0.0",
+  "description": "A priority queue data structure which can accept arrays of ",
+  "main": "PriorityQueueFacade.js",
+  "scripts": {
+    "build": "webpack --env.development --mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/turisap/Priority-Queue.git"
+  },
+  "keywords": [
+    "priority",
+    "queue"
+  ],
+  "author": "turisap/Kirill Shakirov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/turisap/Priority-Queue/issues"
+  },
+  "homepage": "https://github.com/turisap/Priority-Queue#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-import": "^2.13.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "json-loader": "^0.5.7"
+  }
+}
