@@ -8,6 +8,7 @@ let heapLogs = '';
  * Afterwards, runs a series of checks for each instance. Stops if a check falls.
  */
 function generator () {
+    /* eslint-disable no-unused-vars */
 
     let queue;
     while (true) {
@@ -15,38 +16,57 @@ function generator () {
         queue = getFreshQueue();
 
         //check if the binary heap has been properly built
-        if(checkHeap(queue)) {
-            console.log('Checking heap, OK');
-            console.log(`HEAP: ${queue.getHeap()}`);
-        } else {
-            console.log(`
-                WRONG ANSWER,
-                HEAP: ${queue.getHeap()}
-                LOGS : ${heapLogs}
-            `);
-            break;
-        }
+        if(!checkHeap(queue)) break;
 
 
         // check insertion into the heap
         queue = getFreshQueue();
         queue.enqueue(getRandomArray());
-        if(checkHeap(queue)) {
-            console.log('Checking Insertion, OK');
-            console.log(`HEAP: ${queue.getHeap()}`);
-        } else {
-            console.log(`
-                WRONG ANSWER,
-                HEAP: ${queue.getHeap()}
-                LOGS : ${heapLogs}
-            `);
+        if(!checkHeap(queue)) break;
+
+        // checking removal from the queue
+        queue = getFreshQueue();
+        const el = queue.dequeue();
+        if(!checkHeap(queue)) break;
+        if(!checkMinEl(queue, el)) break;
+
+        // stress testing of queue with a naive implementation
+        queue = getFreshQueue();
+        const naiveQueue = queue.getInitialArray().sort((a,b) => a - b);
+        console.log('COMPARING QUEUES, OK');
+        if(!compareImplementations([...naiveQueue], queue)){
+            console.log(heapLogs);
+            console.log(`NAIVE: ${naiveQueue}
+                         QUEUE : ${queue.getHeap()}`);
             break;
         }
 
+        heapLogs = '';
 
     }
 
 }
+
+/**
+ * Compares naive and fast implementations member by member
+ * @param naive
+ * @param fast
+ * @returns {boolean}
+ */
+const compareImplementations = (naive, fast) => {
+    let equalQueues = true;
+    for (let i = 0; i < naive.length; i++) {
+        let naiveEl = naive.shift();
+        let fastEl  = fast.dequeue();
+        if (naiveEl !== fastEl) {
+            heapLogs = `WRONG ANSWER!!!
+                Element from binary heap: ${fastEl}
+                Naive implementation element: ${naiveEl} :`;
+            equalQueues = false;
+        }
+    }
+    return equalQueues;
+};
 
 
 
@@ -94,10 +114,37 @@ const checkHeap = queue => {
     heap.forEach((node, i) => {
         let parent = parentNode(i);
         if (heap[parent] > node && parent >= 0) isHeap = false;
-        heapLogs = `Node ${node} on index ${i} has illegal parent at index ${parent}`;
+        heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
+        HEAP: ${heap}`;
     });
 
+    if(isHeap) {
+        console.log('Checking heap, OK');
+        console.log(`HEAP: ${queue.getHeap()}`);
+    } else {
+        console.log(`
+                WRONG ANSWER,
+                HEAP: ${queue.getHeap()}
+                LOGS : ${heapLogs}
+            `);
+    }
+
     return isHeap;
+};
+
+
+/**
+ * Checks whether or not there is a member with less priority then a given element in a given queue
+ * @param queue
+ * @param el
+ * @returns {boolean}
+ */
+const checkMinEl = (queue, el) => {
+    let isMin = true;
+    queue.getHeap().forEach(member => {
+        if(member < el) isMin = false;
+    });
+    return isMin;
 };
 
 
@@ -106,7 +153,8 @@ const checkHeap = queue => {
  * @param i
  * @returns {number}
  */
-function parentNode(i) {return Math.floor((i - 1) / 2);}
+const parentNode = (i) => Math.floor((i - 1) / 2);
+
 
 
 export default generator;

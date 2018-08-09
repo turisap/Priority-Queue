@@ -14,6 +14,7 @@ class PriorityQueue {
         this._heap = values;
         this.base = base;
         this._errors = [];
+        this._initialArray = values;
 
         this._init(values);
     }
@@ -53,6 +54,19 @@ class PriorityQueue {
 
 
     /**
+     * Removes the root element from the heap and rebuilds it
+     * @returns {T | undefined}
+     */
+    dequeue() {
+        const element = this._heap.shift();
+        this._heap.unshift(this._heap.pop());
+        this.siftDown(0);
+        return element;
+    }
+
+
+
+    /**
      * Builds max heap out of a given array
      */
     buildMaxHeap() {
@@ -60,6 +74,7 @@ class PriorityQueue {
             this.siftDown(i);
         }
     }
+
 
 
     /**
@@ -72,15 +87,9 @@ class PriorityQueue {
 
 
 
-    /**
-     *  Adds a new item to the end of the data structure without rebuilding the heap
-     * @param item
-     * @returns {number}
-     */
-    push(item) {
-        this._heap.push(item);
+    getInitialArray() {
+        return this._initialArray;
     }
-
 
 
     /**
