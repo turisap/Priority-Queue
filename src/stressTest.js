@@ -9,16 +9,30 @@ let heapLogs = '';
  */
 function generator () {
 
+    let queue;
     while (true) {
-        const v = new Array(getRandom(50))
-            .fill(0)
-            .map(() => getRandom(100));
-        const queue = new Queue(v, null);
 
+        queue = getFreshQueue();
 
-        // check if the binary heap has been properly built
+        //check if the binary heap has been properly built
         if(checkHeap(queue)) {
             console.log('Checking heap, OK');
+            console.log(`HEAP: ${queue.getHeap()}`);
+        } else {
+            console.log(`
+                WRONG ANSWER,
+                HEAP: ${queue.getHeap()}
+                LOGS : ${heapLogs}
+            `);
+            break;
+        }
+
+
+        // check insertion into the heap
+        queue = getFreshQueue();
+        queue.enqueue(getRandomArray());
+        if(checkHeap(queue)) {
+            console.log('Checking Insertion, OK');
             console.log(`HEAP: ${queue.getHeap()}`);
         } else {
             console.log(`
@@ -43,6 +57,28 @@ function generator () {
  */
 const getRandom = threshold => {
     return Math.floor(Math.random() * threshold + 1);
+};
+
+
+
+
+/**
+ * Gets a fresh randomly generated priority queue
+ * @returns {PriorityQueue}
+ */
+const getFreshQueue = () => {
+    return new Queue(getRandomArray(), null);
+};
+
+
+/**
+ * Returns a random array
+ * @returns {number[]}
+ */
+const getRandomArray = () => {
+    return new Array(getRandom(50))
+        .fill(0)
+        .map(() => getRandom(100));
 };
 
 

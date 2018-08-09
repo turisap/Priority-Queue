@@ -40,13 +40,25 @@ class PriorityQueue {
 
 
     /**
+     * Inserts an item or an array of items into the heap
+     * @param values
+     */
+    enqueue(...values) {
+        values.forEach(v => {
+            this._heap.push(v);
+            this.siftUp(this.size() - 1);
+        });
+    }
+
+
+
+    /**
      * Builds max heap out of a given array
      */
     buildMaxHeap() {
         for (let i = Math.floor(this.size() / 2); i >= 0; i--) {
             this.siftDown(i);
         }
-        console.log(this._heap);
     }
 
 
@@ -89,6 +101,19 @@ class PriorityQueue {
         if (i !== minIndex) {
             this._swap(minIndex, i);
             this.siftDown(minIndex);
+        }
+    }
+
+
+    /**
+     *
+     * @param i
+     */
+    siftUp(i) {
+        let parent = this._parent(i);
+        if (this._heap[parent] > this._heap[i]) {
+            this._swap(i);
+            this.siftUp(parent);
         }
     }
 
