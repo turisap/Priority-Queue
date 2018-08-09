@@ -10,9 +10,9 @@ class PriorityQueue {
      * @param values
      * @param base
      */
-    constructor(values, base) {
+    constructor(values, minHeap) {
         this._heap = values;
-        this.base = base;
+        this._minHeap = minHeap;
         this._errors = [];
         this._initialArray = values;
 
@@ -69,7 +69,7 @@ class PriorityQueue {
     /**
      * Builds max heap out of a given array
      */
-    buildMaxHeap() {
+    buildHeap() {
         for (let i = Math.floor(this.size() / 2); i >= 0; i--) {
             this.siftDown(i);
         }
@@ -101,12 +101,27 @@ class PriorityQueue {
         let l = this._leftChild(i);
         let r = this._rightChild(i);
 
-        if (l <= this.size() && this._heap[l] < this._heap[minIndex]) {
-            minIndex = l;
+        switch (true) {
+            case(this._minHeap):
+                if (l <= this.size() && this._heap[l] < this._heap[minIndex]) {
+                    minIndex = l;
+                }
+                if (r <= this.size() && this._heap[r] < this._heap[minIndex]) {
+                    minIndex = r;
+                }
+                break;
+            case(!this._minHeap):
+                if (l <= this.size() && this._heap[l] > this._heap[minIndex]) {
+                    minIndex = l;
+                }
+                if (r <= this.size() && this._heap[r] > this._heap[minIndex]) {
+                    minIndex = r;
+                }
+                break;
+            default:
+                break;
         }
-        if (r <= this.size() && this._heap[r] < this._heap[minIndex]) {
-            minIndex = r;
-        }
+
         if (i !== minIndex) {
             this._swap(minIndex, i);
             this.siftDown(minIndex);
@@ -120,7 +135,11 @@ class PriorityQueue {
      */
     siftUp(i) {
         let parent = this._parent(i);
-        if (this._heap[parent] > this._heap[i]) {
+        if (this._minHeap && this._heap[parent] > this._heap[i]) {
+            this._swap(i);
+            this.siftUp(parent);
+        }
+        if (!this._minHeap && this._heap[parent] < this._heap[i]) {
             this._swap(i);
             this.siftUp(parent);
         }
@@ -181,7 +200,7 @@ class PriorityQueue {
      */
     _init(values) {
         this._checkInputRelevance(values);
-        this.buildMaxHeap();
+        this.buildHeap();
     }
 
 

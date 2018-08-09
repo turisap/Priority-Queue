@@ -14,25 +14,32 @@ function generator () {
     while (true) {
 
         queue = getFreshQueue();
+        const minHeap = getRandomBoolean();
 
         //check if the binary heap has been properly built
-        if(!checkHeap(queue)) break;
+        if(!checkHeap(queue, minHeap)) break;
 
 
         // check insertion into the heap
         queue = getFreshQueue();
         queue.enqueue(getRandomArray());
-        if(!checkHeap(queue)) break;
+        if(!checkHeap(queue, minHeap)) break;
+
 
         // checking removal from the queue
         queue = getFreshQueue();
         const el = queue.dequeue();
-        if(!checkHeap(queue)) break;
-        if(!checkMinEl(queue, el)) break;
+        if(!checkHeap(queue, minHeap)) break;
+        if(!checkMinEl(queue, el, minHeap)) break;
+
+
 
         // stress testing of queue with a naive implementation
-        queue = getFreshQueue();
-        const naiveQueue = queue.getInitialArray().sort((a,b) => a - b);
+        queue = getFreshQueue(minHeap);
+        const naiveQueue = queue.getInitialArray().sort((a,b) => {
+            if(minHeap) return a - b;
+            return b - a;
+        });
         console.log('COMPARING QUEUES, OK');
         if(!compareImplementations([...naiveQueue], queue)){
             console.log(heapLogs);
@@ -42,10 +49,9 @@ function generator () {
         }
 
         heapLogs = '';
-
     }
-
 }
+
 
 /**
  * Compares naive and fast implementations member by member
@@ -86,9 +92,20 @@ const getRandom = threshold => {
  * Gets a fresh randomly generated priority queue
  * @returns {PriorityQueue}
  */
-const getFreshQueue = () => {
-    return new Queue(getRandomArray(), null);
+const getFreshQueue = (base) => {
+    return new Queue(getRandomArray(), base);
 };
+
+
+
+/**
+ *
+ * @returns {boolean}
+ */
+const getRandomBoolean = () => {
+    return Math.floor(Math.random()) > 0.5;
+};
+
 
 
 /**
@@ -107,13 +124,14 @@ const getRandomArray = () => {
  * @param queue
  * @returns {boolean}
  */
-const checkHeap = queue => {
+const checkHeap = (queue, minHeap) => {
     const heap = queue.getHeap();
     let isHeap = true;
 
     heap.forEach((node, i) => {
         let parent = parentNode(i);
-        if (heap[parent] > node && parent >= 0) isHeap = false;
+        if (minHeap && heap[parent] > node && parent >= 0) isHeap = false;
+        if (!minHeap && heap[parent] < node && parent >= 0) isHeap = false;
         heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
         HEAP: ${heap}`;
     });
@@ -139,11 +157,18 @@ const checkHeap = queue => {
  * @param el
  * @returns {boolean}
  */
-const checkMinEl = (queue, el) => {
+const checkMinEl = (queue, el, minHeap) => {
     let isMin = true;
-    queue.getHeap().forEach(member => {
-        if(member < el) isMin = false;
-    });
+    if(minHeap) {
+        queue.getHeap().forEach(member => {
+            if(member < el) isMin = false;
+        });
+    }
+    if(!minHeap) {
+        queue.getHeap().forEach(member => {
+            if(member > el) isMin = false;
+        });
+    }
     return isMin;
 };
 
