@@ -8,11 +8,12 @@ class PriorityQueue {
     /**
      * Values is an array of objects, while base is a property of objects which priority is built on
      * @param values
-     * @param base
+     * @param config
      */
-    constructor(values, minHeap) {
+    constructor(values, config) {
         this._heap = values;
-        this._minHeap = minHeap;
+        this._minHeap = config.minHeap;
+        this._baseProperty = config.baseProperty;
         this._errors = [];
         this._initialArray = values;
 
@@ -101,6 +102,7 @@ class PriorityQueue {
         let l = this._leftChild(i);
         let r = this._rightChild(i);
 
+        /* eslint-disable indent */
         switch (true) {
             case(this._minHeap):
                 if (l <= this.size() && this._heap[l] < this._heap[minIndex]) {
@@ -121,6 +123,7 @@ class PriorityQueue {
             default:
                 break;
         }
+        /* eslint-enable indent */
 
         if (i !== minIndex) {
             this._swap(minIndex, i);
