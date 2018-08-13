@@ -161,17 +161,17 @@ class PriorityQueue {
 
 
     /**
-     *
+     * Sifts an element Up after insertions / deletions
      * @param i
      */
     siftUp(i) {
         let parent = this._parent(i);
-        if (this._minHeap && this._heap[parent] > this._heap[i]) {
-            this._swap(i);
+        if (this._minHeap && this._heap[parent][this._baseProperty] > this._heap[i][this._baseProperty]) {
+            this._swap(i, parent);
             this.siftUp(parent);
         }
-        if (!this._minHeap && this._heap[parent] < this._heap[i]) {
-            this._swap(i);
+        if (!this._minHeap && this._heap[parent][this._baseProperty] < this._heap[i][this._baseProperty]) {
+            this._swap(i, parent);
             this.siftUp(parent);
         }
     }

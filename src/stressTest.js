@@ -17,23 +17,24 @@ function generator () {
 
         //queue = getFreshQueue();
         const minHeap = getRandomBoolean();
+        queue = getFreshQueue({minHeap, baseProperty});
 
 
-        // //check if the binary heap has been properly built
-        // if(!checkHeap(queue, minHeap)) break;
-        //
-        //
-        // // check insertion into the heap
-        // queue = getFreshQueue();
-        // queue.enqueue(getRandomArray());
-        // if(!checkHeap(queue, minHeap)) break;
-        //
-        //
-        // // checking removal from the queue
-        // queue = getFreshQueue();
-        // const el = queue.dequeue();
-        // if(!checkHeap(queue, minHeap)) break;
-        // if(!checkMinEl(queue, el, minHeap)) break;
+        //check if the binary heap has been properly built
+        if(!checkHeap(queue, minHeap)) break;
+
+
+        // check insertion into the heap
+        queue = getFreshQueue({minHeap, baseProperty});
+        queue.enqueue(getUsers(getRandom(10)));
+        if(!checkHeap(queue, minHeap)) break;
+
+
+        // checking removal from the queue
+        queue = getFreshQueue({minHeap, baseProperty});
+        const el = queue.dequeue();
+        if(!checkHeap(queue, minHeap)) break;
+        if(!checkMinEl(queue, el, minHeap)) break;
 
 
 
@@ -125,46 +126,69 @@ const getRandomArray = () => {
 };
 
 
-// /**
-//  * Check legibility of a given heap by checking parent of each node and comparing them
-//  * @param queue
-//  * @returns {boolean}
-//  */
-// const checkHeap = (queue, minHeap) => {
-//     const heap = queue.getHeap();
-//     let isHeap = true;
-//
-//     heap.forEach((node, i) => {
-//         let parent = parentNode(i);
-//         if (minHeap && heap[parent] > node && parent >= 0) isHeap = false;
-//         if (!minHeap && heap[parent] < node && parent >= 0) isHeap = false;
-//         heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
-//         HEAP: ${heap}`;
-//     });
-//
-//     if(isHeap) {
-//         console.log('Checking heap, OK');
-//         console.log(`HEAP: ${queue.getHeap()}`);
-//     } else {
-//         console.log(`
-//                 WRONG ANSWER,
-//                 HEAP: ${queue.getHeap()}
-//                 LOGS : ${heapLogs}
-//             `);
-//     }
-//
-//     return isHeap;
-// };
-//
-//
-//
+/**
+ * Check legibility of a given heap by checking parent of each node and comparing them
+ * @param queue
+ * @returns {boolean}
+ */
+const checkHeap = (queue, minHeap) => {
+    const heap = queue.getSortedBasePropertyRow();
+    let isHeap = true;
 
-// /**
-//  * Returns index of a parent node
-//  * @param i
-//  * @returns {number}
-//  */
-// const parentNode = (i) => Math.floor((i - 1) / 2);
+    heap.forEach((node, i) => {
+        let parent = parentNode(i);
+        if (minHeap && heap[parent] > node && parent >= 0) isHeap = false;
+        if (!minHeap && heap[parent] < node && parent >= 0) isHeap = false;
+        heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
+        HEAP: ${heap}`;
+    });
+
+    if(isHeap) {
+        console.log('Checking heap, OK');
+        console.log(`HEAP: ${queue.getHeap()}`);
+    } else {
+        console.log(`
+                WRONG ANSWER,
+                HEAP: ${queue.getHeap()}
+                LOGS : ${heapLogs}
+            `);
+    }
+
+    return isHeap;
+};
+
+
+
+/**
+ * Checks whether or not there is a member with less priority then a given element in a given queue
+ * @param queue
+ * @param el
+ * @param minHeap
+ * @returns {boolean}
+ */
+const checkMinEl = (queue, el, minHeap) => {
+    let isMin = true;
+    if(minHeap) {
+        queue.getSortedBasePropertyRow().forEach(member => {
+            if(member < el) isMin = false;
+        });
+    }
+    if(!minHeap) {
+        queue.getSortedBasePropertyRow().forEach(member => {
+            if(member > el) isMin = false;
+        });
+    }
+    return isMin;
+};
+
+
+
+/**
+ * Returns index of a parent node
+ * @param i
+ * @returns {number}
+ */
+const parentNode = (i) => Math.floor((i - 1) / 2);
 
 
 
