@@ -1,6 +1,4 @@
-/**
- * This class represents core of priority queue
- */
+'use strict';
 
 
 class PriorityQueue {
@@ -87,9 +85,21 @@ class PriorityQueue {
     }
 
 
-
+    /**
+     * Returns initial array which was passed during queue initialization
+     * @returns {*}
+     */
     getInitialArray() {
         return this._initialArray;
+    }
+
+
+    /**
+     * Returns array of ordered base properties
+     * @returns {any[]}
+     */
+    getBasePropertyRow() {
+        return this._heap.map(i => i[this._baseProperty])
     }
 
 
@@ -105,19 +115,27 @@ class PriorityQueue {
         /* eslint-disable indent */
         switch (true) {
             case(this._minHeap):
-                if (l <= this.size() && this._heap[l] < this._heap[minIndex]) {
-                    minIndex = l;
+                if (l < this.size()) {
+                    if (this._heap[l][this._baseProperty] < this._heap[minIndex][this._baseProperty]) {
+                        minIndex = l;
+                    }
                 }
-                if (r <= this.size() && this._heap[r] < this._heap[minIndex]) {
-                    minIndex = r;
+                if (r < this.size()) {
+                    if (this._heap[r][this._baseProperty] < this._heap[minIndex][this._baseProperty]) {
+                        minIndex = r;
+                    }
                 }
                 break;
             case(!this._minHeap):
-                if (l <= this.size() && this._heap[l] > this._heap[minIndex]) {
-                    minIndex = l;
+                if (l < this.size()) {
+                    if (this._heap[l][this._baseProperty] > this._heap[minIndex][this._baseProperty]) {
+                        minIndex = l;
+                    }
                 }
-                if (r <= this.size() && this._heap[r] > this._heap[minIndex]) {
-                    minIndex = r;
+                if (r < this.size()) {
+                    if (this._heap[r][this._baseProperty] > this._heap[minIndex][this._baseProperty]) {
+                        minIndex = r;
+                    }
                 }
                 break;
             default:

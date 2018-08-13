@@ -1,3 +1,5 @@
+'use strict';
+
 import Queue from './src/Queue';
 import dotenv from 'dotenv';
 import getUser from './src/factory';
@@ -7,13 +9,13 @@ dotenv.config({ silent: true });
 
 const config = {
     minHeap : true,
-    baseProperty : 'id'
+    baseProperty : 'salary'
 };
 
+const array = getUser(10);
 
+const queue = new Queue(array, config);
 
-const queue = new Queue(getUser(10), config);
-
-console.log(queue.getHeap());
+console.log(queue.getBasePropertyRow());
 
 //generator();
