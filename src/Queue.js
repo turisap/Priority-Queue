@@ -3,6 +3,7 @@
 
 class PriorityQueue {
 
+
     /**
      * Values is an array of objects, while base is a property of objects which priority is built on
      * @param values
@@ -98,8 +99,17 @@ class PriorityQueue {
      * Returns array of ordered base properties
      * @returns {any[]}
      */
-    getBasePropertyRow() {
-        return this._heap.map(i => i[this._baseProperty])
+    getInitialBasePropertyRow() {
+        return this._initialArray.map(i => i[this._baseProperty]);
+    }
+
+
+    /**
+     * Returns array of base properties in sorted order
+     * @returns {any[]}
+     */
+    getSortedBasePropertyRow() {
+        return this._heap.map(i => i[this._baseProperty]);
     }
 
 
