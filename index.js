@@ -14,6 +14,8 @@ const config = {
 
 const array = getUser(0);
 
+array.push({salary: 'hui'});
+
 const queue = new Queue(array, config);
 
 queue.enqueue(getUser(1));

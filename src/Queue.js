@@ -1,4 +1,5 @@
 'use strict';
+import Validator from './Validator';
 
 
 class PriorityQueue {
@@ -11,12 +12,12 @@ class PriorityQueue {
      */
     constructor(values, config) {
         this._heap = values;
-        this._minHeap = config.minHeap;
-        this._baseProperty = config.baseProperty;
-        this._errors = [];
+        this._config = config;
+        /*this._minHeap = config.minHeap;
+        this._baseProperty = config.baseProperty;*/
         this._initialArray = values;
 
-        this._init(values);
+        this._init();
     }
 
 
@@ -167,14 +168,12 @@ class PriorityQueue {
     siftUp(i) {
         let parent = this._parent(i);
         if (this._minHeap) {
-            console.log(`HEAP: ${this.getSortedBasePropertyRow()}, index: ${i}`);
             if (this._heap[parent] && this._heap[parent][this._baseProperty] > this._heap[i][this._baseProperty]) {
                 this._swap(i, parent);
                 this.siftUp(parent);
             }
         }
         if (!this._minHeap) {
-            console.log(`HEAP: ${this.getSortedBasePropertyRow()}, index: ${i}`);
             if (this._heap[parent] && this._heap[parent][this._baseProperty] < this._heap[i][this._baseProperty]) {
                 this._swap(i, parent);
                 this.siftUp(parent);
@@ -232,11 +231,10 @@ class PriorityQueue {
 
     /**
      * Initializer for the data structure
-     * @param values
      * @private
      */
-    _init(values) {
-        this._checkInputRelevance(values);
+    _init() {
+        this._validateInput();
         this.buildHeap();
     }
 
@@ -244,14 +242,15 @@ class PriorityQueue {
 
     /**
      * Checks whether or not a given array of values is consistent and appropriate for processing
-     * @param values
      * @private
      */
-    _checkInputRelevance(values) {
-        if(!values.length) console.log('An empty Priority Queue has been created');
-        if(values.length) console.log('A Priority Queue has been created');
+    _validateInput() {
+        const validator = new Validator(this._initialArray, this._config);
+        validator._checkIfConfigIsLegal();
     }
 
 }
+
+
 
 export default PriorityQueue;
