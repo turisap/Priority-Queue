@@ -3,7 +3,7 @@
 import Queue from './src/Queue';
 import dotenv from 'dotenv';
 import getUser from './src/factory';
-import generator from './src/stressTest';
+//import generator from './src/stressTest';
 
 dotenv.config({ silent: true });
 
@@ -12,10 +12,12 @@ const config = {
     baseProperty : 'salary'
 };
 
-const array = getUser(10);
+const array = getUser(0);
 
 const queue = new Queue(array, config);
 
-queue.getHeap();
+queue.enqueue(getUser(1));
 
-generator();
+console.log(queue.getHeap());
+
+//generator();

@@ -44,7 +44,7 @@ class PriorityQueue {
      * Inserts an item or an array of items into the heap
      * @param values
      */
-    enqueue(...values) {
+    enqueue(values) {
         values.forEach(v => {
             this._heap.push(v);
             this.siftUp(this.size() - 1);
@@ -166,13 +166,19 @@ class PriorityQueue {
      */
     siftUp(i) {
         let parent = this._parent(i);
-        if (this._minHeap && this._heap[parent][this._baseProperty] > this._heap[i][this._baseProperty]) {
-            this._swap(i, parent);
-            this.siftUp(parent);
+        if (this._minHeap) {
+            console.log(`HEAP: ${this.getSortedBasePropertyRow()}, index: ${i}`);
+            if (this._heap[parent] && this._heap[parent][this._baseProperty] > this._heap[i][this._baseProperty]) {
+                this._swap(i, parent);
+                this.siftUp(parent);
+            }
         }
-        if (!this._minHeap && this._heap[parent][this._baseProperty] < this._heap[i][this._baseProperty]) {
-            this._swap(i, parent);
-            this.siftUp(parent);
+        if (!this._minHeap) {
+            console.log(`HEAP: ${this.getSortedBasePropertyRow()}, index: ${i}`);
+            if (this._heap[parent] && this._heap[parent][this._baseProperty] < this._heap[i][this._baseProperty]) {
+                this._swap(i, parent);
+                this.siftUp(parent);
+            }
         }
     }
 
