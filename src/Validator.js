@@ -32,9 +32,11 @@ class Validator {
     _checkIfBasePropertyPresent() {
         if(this.input.length) {
             this.input.forEach(el => {
+                console.log(el);
                 if(!el[this.config.baseProperty]) {
                     throw new ValidationError('Base property which has been specified' +
-                        ' in config should be present in all members of the data structure.');
+                        ' in config should be present in all members of the data structure.'  + ' Base property is '
+                        + this.config.baseProperty);
                 }
             });
         }

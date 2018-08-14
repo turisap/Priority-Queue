@@ -13,8 +13,6 @@ class PriorityQueue {
     constructor(values, config) {
         this._heap = values;
         this._config = config;
-        /*this._minHeap = config.minHeap;
-        this._baseProperty = config.baseProperty;*/
         this._initialArray = values;
 
         this._init();
@@ -87,21 +85,13 @@ class PriorityQueue {
     }
 
 
-    /**
-     * Returns initial array which was passed during queue initialization
-     * @returns {*}
-     */
-    getInitialArray() {
-        return this._initialArray;
-    }
-
 
     /**
      * Returns array of ordered base properties
      * @returns {any[]}
      */
     getInitialBasePropertyRow() {
-        return this._initialArray.map(i => i[this._baseProperty]);
+        return this._initialArray.map(i => i[this._config.baseProperty]);
     }
 
 
@@ -110,7 +100,7 @@ class PriorityQueue {
      * @returns {any[]}
      */
     getSortedBasePropertyRow() {
-        return this._heap.map(i => i[this._baseProperty]);
+        return this._heap.map(i => i[this._config.baseProperty]);
     }
 
 
@@ -125,26 +115,26 @@ class PriorityQueue {
 
         /* eslint-disable indent */
         switch (true) {
-            case(this._minHeap):
+            case(this._config.minHeap):
                 if (l < this.size()) {
-                    if (this._heap[l][this._baseProperty] < this._heap[minIndex][this._baseProperty]) {
+                    if (this._heap[l][this._config.baseProperty] < this._heap[minIndex][this._config.baseProperty]) {
                         minIndex = l;
                     }
                 }
                 if (r < this.size()) {
-                    if (this._heap[r][this._baseProperty] < this._heap[minIndex][this._baseProperty]) {
+                    if (this._heap[r][this._config.baseProperty] < this._heap[minIndex][this._config.baseProperty]) {
                         minIndex = r;
                     }
                 }
                 break;
-            case(!this._minHeap):
+            case(!this._config.minHeap):
                 if (l < this.size()) {
-                    if (this._heap[l][this._baseProperty] > this._heap[minIndex][this._baseProperty]) {
+                    if (this._heap[l][this._config.baseProperty] > this._heap[minIndex][this._config.baseProperty]) {
                         minIndex = l;
                     }
                 }
                 if (r < this.size()) {
-                    if (this._heap[r][this._baseProperty] > this._heap[minIndex][this._baseProperty]) {
+                    if (this._heap[r][this._config.baseProperty] > this._heap[minIndex][this._config.baseProperty]) {
                         minIndex = r;
                     }
                 }
@@ -167,14 +157,14 @@ class PriorityQueue {
      */
     siftUp(i) {
         let parent = this._parent(i);
-        if (this._minHeap) {
-            if (this._heap[parent] && this._heap[parent][this._baseProperty] > this._heap[i][this._baseProperty]) {
+        if (this._config.minHeap) {
+            if (this._heap[parent] && this._heap[parent][this._config.baseProperty] > this._heap[i][this._config.baseProperty]) {
                 this._swap(i, parent);
                 this.siftUp(parent);
             }
         }
-        if (!this._minHeap) {
-            if (this._heap[parent] && this._heap[parent][this._baseProperty] < this._heap[i][this._baseProperty]) {
+        if (!this._config.minHeap) {
+            if (this._heap[parent] && this._heap[parent][this._config.baseProperty] < this._heap[i][this._config.baseProperty]) {
                 this._swap(i, parent);
                 this.siftUp(parent);
             }
@@ -245,8 +235,7 @@ class PriorityQueue {
      * @private
      */
     _validateInput() {
-        const validator = new Validator(this._initialArray, this._config);
-        validator._checkIfConfigIsLegal();
+        new Validator(this._initialArray, this._config);
     }
 
 }

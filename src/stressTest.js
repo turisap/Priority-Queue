@@ -15,7 +15,6 @@ function generator () {
     let queue;
     while (true) {
 
-        //queue = getFreshQueue();
         const minHeap = getRandomBoolean();
         queue = getFreshQueue({minHeap, baseProperty});
 
