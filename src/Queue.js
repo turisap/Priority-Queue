@@ -1,4 +1,5 @@
 'use strict';
+
 import Validator from './Validator';
 
 
@@ -63,14 +64,38 @@ class PriorityQueue {
     }
 
 
+    /**
+     * Returns index of the left child of a given element in the heap
+     * @param i
+     * @returns {number}
+     * @private
+     */
+    static _leftChild(i) {
+        return (2 * i) + 1;
+    }
+
+
 
     /**
-     * Builds max heap out of a given array
+     * Returns index of the right child of a given element in the heap
+     * @param i
+     * @returns {number}
+     * @private
      */
-    _buildHeap() {
-        for (let i = Math.floor(this.size() / 2); i >= 0; i--) {
-            this._siftDown(i);
-        }
+    static _rightChild(i) {
+        return (2 * i) + 2;
+    }
+
+
+
+    /**
+     * Returns index of the parent node
+     * @param i
+     * @returns {number}
+     * @private
+     */
+    static _parent(i) {
+        return Math.floor((i - 1) / 2);
     }
 
 
@@ -94,6 +119,7 @@ class PriorityQueue {
     }
 
 
+
     /**
      * Returns array of base properties in sorted order
      * @returns {any[]}
@@ -103,6 +129,7 @@ class PriorityQueue {
     }
 
 
+
     /**
      * Return true if the current instance is a min-heap based queue
      * @private
@@ -110,6 +137,18 @@ class PriorityQueue {
     get _isMinHeap() {
         return this._config.minHeap;
     }
+
+
+    /**
+     * Builds max heap out of a given array
+     */
+    _buildHeap() {
+        for (let i = Math.floor(this.size() / 2); i >= 0; i--) {
+            this._siftDown(i);
+        }
+    }
+
+
 
 
     /**
@@ -147,6 +186,7 @@ class PriorityQueue {
     }
 
 
+
     /**
      * Sifts an element Up after insertions / deletions
      * @param i
@@ -179,41 +219,6 @@ class PriorityQueue {
         this._heap[a] = this._heap[b];
         this._heap[b] = tempEl;
     }
-
-
-    /**
-     * Returns index of the left child of a given element in the heap
-     * @param i
-     * @returns {number}
-     * @private
-     */
-    static _leftChild(i) {
-        return (2 * i) + 1;
-    }
-
-
-
-    /**
-     * Returns index of the right child of a given element in the heap
-     * @param i
-     * @returns {number}
-     * @private
-     */
-    static _rightChild(i) {
-        return (2 * i) + 2;
-    }
-
-
-    /**
-     * Returns index of the parent node
-     * @param i
-     * @returns {number}
-     * @private
-     */
-    static _parent(i) {
-        return Math.floor((i - 1) / 2);
-    }
-
 
 
 
