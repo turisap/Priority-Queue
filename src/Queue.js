@@ -143,7 +143,7 @@ class PriorityQueue {
         const childValue = this._heap[childIndex][this._config.baseProperty];
         const nodeValue  = this._heap[minIndex][this._config.baseProperty];
         if (this._isMinHeap) return childValue < nodeValue;
-        if (!this._isMinHeap) return childValue > nodeValue;
+        return childValue > nodeValue;
     }
 
 
