@@ -136,10 +136,17 @@ const checkHeap = (queue, minHeap) => {
 
     heap.forEach((node, i) => {
         let parent = parentNode(i);
-        if (minHeap && heap[parent] > node && parent >= 0) isHeap = false;
-        if (!minHeap && heap[parent] < node && parent >= 0) isHeap = false;
-        heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
+        if (minHeap && heap[parent] > node && parent >= 0) {
+            heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
         HEAP: ${heap}`;
+            isHeap = false;
+        }
+        if (!minHeap && heap[parent] < node && parent >= 0) {
+            heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
+        HEAP: ${heap}`;
+            isHeap = false;
+        }
+
     });
 
     if(isHeap) {
@@ -148,7 +155,8 @@ const checkHeap = (queue, minHeap) => {
     } else {
         console.log(`
                 WRONG ANSWER,
-                HEAP: ${queue.getHeap()}
+                HEAP: ${queue.getSortedBasePropertyRow()}
+                HEAP TYPE : ${queue.isMinHeap() ? 'min-heap' : 'max-heap'}, ${minHeap ? 'min-heap' : 'max-heap'}
                 LOGS : ${heapLogs}
             `);
     }

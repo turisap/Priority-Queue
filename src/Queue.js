@@ -37,6 +37,10 @@ class PriorityQueue {
         if(this._heap) this._heap = [];
     }
 
+    isMinHeap() {
+        return this._config.minHeap;
+    }
+
 
 
     /**
@@ -110,39 +114,11 @@ class PriorityQueue {
      */
     siftDown(i) {
         let minIndex = i;
-        let l = this._leftChild(i);
-        let r = this._rightChild(i);
+        let l = PriorityQueue._leftChild(i);
+        let r = PriorityQueue._rightChild(i);
 
-        /* eslint-disable indent */
-        switch (true) {
-            case(this._config.minHeap):
-                if (l < this.size()) {
-                    if (this._heap[l][this._config.baseProperty] < this._heap[minIndex][this._config.baseProperty]) {
-                        minIndex = l;
-                    }
-                }
-                if (r < this.size()) {
-                    if (this._heap[r][this._config.baseProperty] < this._heap[minIndex][this._config.baseProperty]) {
-                        minIndex = r;
-                    }
-                }
-                break;
-            case(!this._config.minHeap):
-                if (l < this.size()) {
-                    if (this._heap[l][this._config.baseProperty] > this._heap[minIndex][this._config.baseProperty]) {
-                        minIndex = l;
-                    }
-                }
-                if (r < this.size()) {
-                    if (this._heap[r][this._config.baseProperty] > this._heap[minIndex][this._config.baseProperty]) {
-                        minIndex = r;
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-        /* eslint-enable indent */
+        if(this._nodeHasChildAndCanBeSwapped(minIndex, l)) minIndex = l;
+        if(this._nodeHasChildAndCanBeSwapped(minIndex, r)) minIndex = r;
 
         if (i !== minIndex) {
             this._swap(minIndex, i);
@@ -151,12 +127,22 @@ class PriorityQueue {
     }
 
 
+
+    _nodeHasChildAndCanBeSwapped(minIndex, childIndex) {
+        if (childIndex >= this.size()) return false;
+        const childValue = this._heap[childIndex][this._config.baseProperty];
+        const nodeValue  = this._heap[minIndex][this._config.baseProperty];
+        if (this._config.minHeap) return childValue < nodeValue;
+        if (!this._config.minHeap) return childValue > nodeValue;
+    }
+
+
     /**
      * Sifts an element Up after insertions / deletions
      * @param i
      */
     siftUp(i) {
-        let parent = this._parent(i);
+        let parent = PriorityQueue._parent(i);
         if (this._config.minHeap) {
             if (this._heap[parent] && this._heap[parent][this._config.baseProperty] > this._heap[i][this._config.baseProperty]) {
                 this._swap(i, parent);
@@ -191,7 +177,7 @@ class PriorityQueue {
      * @returns {number}
      * @private
      */
-    _leftChild(i) {
+    static _leftChild(i) {
         return (2 * i) + 1;
     }
 
@@ -203,7 +189,7 @@ class PriorityQueue {
      * @returns {number}
      * @private
      */
-    _rightChild(i) {
+    static _rightChild(i) {
         return (2 * i) + 2;
     }
 
@@ -214,19 +200,10 @@ class PriorityQueue {
      * @returns {number}
      * @private
      */
-    _parent(i) {
+    static _parent(i) {
         return Math.floor((i - 1) / 2);
     }
 
-
-    /**
-     * Initializer for the data structure
-     * @private
-     */
-    _init() {
-        this._validateInput();
-        this.buildHeap();
-    }
 
 
 
@@ -236,6 +213,17 @@ class PriorityQueue {
      */
     _validateInput() {
         new Validator(this._initialArray, this._config);
+    }
+
+
+
+    /**
+     * Initializer for the data structure
+     * @private
+     */
+    _init() {
+        this._validateInput();
+        this.buildHeap();
     }
 
 }
