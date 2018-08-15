@@ -37,11 +37,6 @@ class PriorityQueue {
         if(this._heap) this._heap = [];
     }
 
-    isMinHeap() {
-        return this._config.minHeap;
-    }
-
-
 
     /**
      * Inserts an item or an array of items into the heap
@@ -50,7 +45,7 @@ class PriorityQueue {
     enqueue(values) {
         values.forEach(v => {
             this._heap.push(v);
-            this.siftUp(this.size() - 1);
+            this._siftUp(this.size() - 1);
         });
     }
 
@@ -63,7 +58,7 @@ class PriorityQueue {
     dequeue() {
         const element = this._heap.shift();
         this._heap.unshift(this._heap.pop());
-        this.siftDown(0);
+        this._siftDown(0);
         return element;
     }
 
@@ -72,9 +67,9 @@ class PriorityQueue {
     /**
      * Builds max heap out of a given array
      */
-    buildHeap() {
+    _buildHeap() {
         for (let i = Math.floor(this.size() / 2); i >= 0; i--) {
-            this.siftDown(i);
+            this._siftDown(i);
         }
     }
 
@@ -84,7 +79,7 @@ class PriorityQueue {
      * Heap getter
      * @returns {*|Array}
      */
-    getHeap() {
+    get heap() {
         return this._heap;
     }
 
@@ -94,7 +89,7 @@ class PriorityQueue {
      * Returns array of ordered base properties
      * @returns {any[]}
      */
-    getInitialBasePropertyRow() {
+    get _initialBasePropertyRow() {
         return this._initialArray.map(i => i[this._config.baseProperty]);
     }
 
@@ -103,8 +98,17 @@ class PriorityQueue {
      * Returns array of base properties in sorted order
      * @returns {any[]}
      */
-    getSortedBasePropertyRow() {
+    get _sortedBasePropertyRow() {
         return this._heap.map(i => i[this._config.baseProperty]);
+    }
+
+
+    /**
+     * Return true if the current instance is a min-heap based queue
+     * @private
+     */
+    get _isMinHeap() {
+        return this._config.minHeap;
     }
 
 
@@ -112,7 +116,7 @@ class PriorityQueue {
      * Sifts down a given element until its children less then itself
      * @param i
      */
-    siftDown(i) {
+    _siftDown(i) {
         let minIndex = i;
         let l = PriorityQueue._leftChild(i);
         let r = PriorityQueue._rightChild(i);
@@ -122,18 +126,24 @@ class PriorityQueue {
 
         if (i !== minIndex) {
             this._swap(minIndex, i);
-            this.siftDown(minIndex);
+            this._siftDown(minIndex);
         }
     }
 
 
-
+    /**
+     * Decides whether or not a given node has child and should be swapped with it based on their values and the heap type
+     * @param minIndex
+     * @param childIndex
+     * @returns {boolean}
+     * @private
+     */
     _nodeHasChildAndCanBeSwapped(minIndex, childIndex) {
         if (childIndex >= this.size()) return false;
         const childValue = this._heap[childIndex][this._config.baseProperty];
         const nodeValue  = this._heap[minIndex][this._config.baseProperty];
-        if (this._config.minHeap) return childValue < nodeValue;
-        if (!this._config.minHeap) return childValue > nodeValue;
+        if (this._isMinHeap) return childValue < nodeValue;
+        if (!this._isMinHeap) return childValue > nodeValue;
     }
 
 
@@ -141,18 +151,18 @@ class PriorityQueue {
      * Sifts an element Up after insertions / deletions
      * @param i
      */
-    siftUp(i) {
+    _siftUp(i) {
         let parent = PriorityQueue._parent(i);
-        if (this._config.minHeap) {
+        if (this._isMinHeap) {
             if (this._heap[parent] && this._heap[parent][this._config.baseProperty] > this._heap[i][this._config.baseProperty]) {
                 this._swap(i, parent);
-                this.siftUp(parent);
+                this._siftUp(parent);
             }
         }
-        if (!this._config.minHeap) {
+        if (!this._isMinHeap) {
             if (this._heap[parent] && this._heap[parent][this._config.baseProperty] < this._heap[i][this._config.baseProperty]) {
                 this._swap(i, parent);
-                this.siftUp(parent);
+                this._siftUp(parent);
             }
         }
     }
@@ -223,7 +233,7 @@ class PriorityQueue {
      */
     _init() {
         this._validateInput();
-        this.buildHeap();
+        this._buildHeap();
     }
 
 }

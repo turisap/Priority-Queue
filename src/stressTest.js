@@ -39,7 +39,7 @@ function generator () {
 
         // stress testing of queue with a naive implementation
         queue = getFreshQueue({minHeap, baseProperty});
-        const naiveQueue = queue.getInitialBasePropertyRow().sort((a,b) => {
+        const naiveQueue = queue._initialBasePropertyRow.sort((a,b) => {
             if(minHeap) return a - b;
             return b - a;
         });
@@ -47,11 +47,11 @@ function generator () {
         if(!compareImplementations([...naiveQueue], queue)){
             console.log(heapLogs);
             console.log(`NAIVE: ${naiveQueue}
-                         QUEUE : ${queue.getSortedBasePropertyRow()}`);
+                         QUEUE : ${queue._sortedBasePropertyRow}`);
             break;
         }
-        console.log(queue.getHeap());
-        console.log(`COMPARING QUEUES, OK. Queue : ${queue.getSortedBasePropertyRow()}`);
+        console.log(queue.heap);
+        console.log(`COMPARING QUEUES, OK. Queue : ${queue._sortedBasePropertyRow}`);
 
         heapLogs = '';
     }
@@ -131,7 +131,7 @@ const getRandomArray = () => {
  * @returns {boolean}
  */
 const checkHeap = (queue, minHeap) => {
-    const heap = queue.getSortedBasePropertyRow();
+    const heap = queue._sortedBasePropertyRow;
     let isHeap = true;
 
     heap.forEach((node, i) => {
@@ -151,11 +151,11 @@ const checkHeap = (queue, minHeap) => {
 
     if(isHeap) {
         console.log('Checking heap, OK');
-        console.log(`HEAP: ${queue.getHeap()}`);
+        console.log(`HEAP: ${queue.heap}`);
     } else {
         console.log(`
                 WRONG ANSWER,
-                HEAP: ${queue.getSortedBasePropertyRow()}
+                HEAP: ${queue.sortedBasePropertyRow}
                 HEAP TYPE : ${queue.isMinHeap() ? 'min-heap' : 'max-heap'}, ${minHeap ? 'min-heap' : 'max-heap'}
                 LOGS : ${heapLogs}
             `);
@@ -176,12 +176,12 @@ const checkHeap = (queue, minHeap) => {
 const checkMinEl = (queue, el, minHeap) => {
     let isMin = true;
     if(minHeap) {
-        queue.getSortedBasePropertyRow().forEach(member => {
+        queue._sortedBasePropertyRow.forEach(member => {
             if(member < el) isMin = false;
         });
     }
     if(!minHeap) {
-        queue.getSortedBasePropertyRow().forEach(member => {
+        queue._sortedBasePropertyRow.forEach(member => {
             if(member > el) isMin = false;
         });
     }
