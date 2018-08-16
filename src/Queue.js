@@ -12,7 +12,7 @@ class PriorityQueue {
      * @param config
      */
     constructor(values, config) {
-        this._heap = values;
+        this.binaryTree = values;
         this._config = config;
         this._initialArray = values;
 
@@ -26,7 +26,7 @@ class PriorityQueue {
      * @returns {number}
      */
     size() {
-        return this._heap.length;
+        return this.binaryTree.length;
     }
 
 
@@ -35,18 +35,19 @@ class PriorityQueue {
      * Erases all items from queue
      */
     clear() {
-        if(this._heap) this._heap = [];
+        if(this.binaryTree) this.binaryTree = [];
     }
-
 
     /**
      * Inserts an item or an array of items into the heap
+     * This method is for test purposes only. To use the data structure, go to the respective method in
+     * PriorityQueueFacade
      * @param values
      */
-    enqueue(values) {
+    enqueue(...values) {
         values.forEach(v => {
-            this._heap.push(v);
-            this._siftUp(this.size() - 1);
+            this.binaryTree.push(v);
+            this.siftUp(this.size() - 1);
         });
     }
 
@@ -54,15 +55,18 @@ class PriorityQueue {
 
     /**
      * Removes the root element from the heap and rebuilds it
+     * This method is for test purposes only. To use the data structure, go to the respective method in
+     * PriorityQueueFacade
      * @returns {T | undefined}
      */
     dequeue() {
-        const element = this._heap.shift();
-        this._heap.unshift(this._heap.pop());
-        this._siftDown(0);
+        const element = this.binaryTree.shift();
+        this.binaryTree.unshift(this.binaryTree.pop());
+        this.siftDown(0);
         return element;
     }
 
+    
 
     /**
      * Returns index of the left child of a given element in the heap
@@ -105,7 +109,7 @@ class PriorityQueue {
      * @returns {*|Array}
      */
     get heap() {
-        return this._heap;
+        return this.binaryTree;
     }
 
 
@@ -125,7 +129,7 @@ class PriorityQueue {
      * @returns {any[]}
      */
     get _sortedBasePropertyRow() {
-        return this._heap.map(i => i[this._config.baseProperty]);
+        return this.binaryTree.map(i => i[this._config.baseProperty]);
     }
 
 
@@ -144,7 +148,7 @@ class PriorityQueue {
      */
     _buildHeap() {
         for (let i = Math.floor(this.size() / 2); i >= 0; i--) {
-            this._siftDown(i);
+            this.siftDown(i);
         }
     }
 
@@ -155,7 +159,7 @@ class PriorityQueue {
      * Sifts down a given element until its children less then itself
      * @param i
      */
-    _siftDown(i) {
+    siftDown(i) {
         let minIndex = i;
         let l = PriorityQueue._leftChild(i);
         let r = PriorityQueue._rightChild(i);
@@ -165,7 +169,7 @@ class PriorityQueue {
 
         if (i !== minIndex) {
             this._swap(minIndex, i);
-            this._siftDown(minIndex);
+            this.siftDown(minIndex);
         }
     }
 
@@ -179,8 +183,8 @@ class PriorityQueue {
      */
     _nodeHasChildAndCanBeSwapped(minIndex, childIndex) {
         if (childIndex >= this.size()) return false;
-        const childValue = this._heap[childIndex][this._config.baseProperty];
-        const nodeValue  = this._heap[minIndex][this._config.baseProperty];
+        const childValue = this.binaryTree[childIndex][this._config.baseProperty];
+        const nodeValue  = this.binaryTree[minIndex][this._config.baseProperty];
         if (this._isMinHeap) return childValue < nodeValue;
         return childValue > nodeValue;
     }
@@ -191,11 +195,11 @@ class PriorityQueue {
      * Sifts an element Up after insertions / deletions
      * @param i
      */
-    _siftUp(i) {
+    siftUp(i) {
         let parent = PriorityQueue._parent(i);
         if(this._nodeHasParentAndCanBeSwapped(i, parent)) {
             this._swap(i, parent);
-            this._siftUp(parent);
+            this.siftUp(parent);
         }
     }
 
@@ -209,9 +213,9 @@ class PriorityQueue {
      * @private
      */
     _nodeHasParentAndCanBeSwapped(nodeIndex, parentIndex) {
-        if(!this._heap[parentIndex]) return false;
-        const parentValue = this._heap[parentIndex][this._config.baseProperty];
-        const nodeValue = this._heap[nodeIndex][this._config.baseProperty];
+        if(!this.binaryTree[parentIndex]) return false;
+        const parentValue = this.binaryTree[parentIndex][this._config.baseProperty];
+        const nodeValue = this.binaryTree[nodeIndex][this._config.baseProperty];
         return this._isMinHeap ? parentValue > nodeValue : parentValue < nodeValue;
     }
 
@@ -225,9 +229,9 @@ class PriorityQueue {
      * @private
      */
     _swap(a, b) {
-        const tempEl = this._heap[a];
-        this._heap[a] = this._heap[b];
-        this._heap[b] = tempEl;
+        const tempEl = this.binaryTree[a];
+        this.binaryTree[a] = this.binaryTree[b];
+        this.binaryTree[b] = tempEl;
     }
 
 
