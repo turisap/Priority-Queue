@@ -193,19 +193,29 @@ class PriorityQueue {
      */
     _siftUp(i) {
         let parent = PriorityQueue._parent(i);
-        if (this._isMinHeap) {
-            if (this._heap[parent] && this._heap[parent][this._config.baseProperty] > this._heap[i][this._config.baseProperty]) {
-                this._swap(i, parent);
-                this._siftUp(parent);
-            }
-        }
-        if (!this._isMinHeap) {
-            if (this._heap[parent] && this._heap[parent][this._config.baseProperty] < this._heap[i][this._config.baseProperty]) {
-                this._swap(i, parent);
-                this._siftUp(parent);
-            }
+        if(this._nodeHasParentAndCanBeSwapped(i, parent)) {
+            this._swap(i, parent);
+            this._siftUp(parent);
         }
     }
+
+
+    /**
+     * Decides if a given node should be swapped with its parent based on their base properties values
+     * and heap type.
+     * @param nodeIndex
+     * @param parentIndex
+     * @returns {boolean}
+     * @private
+     */
+    _nodeHasParentAndCanBeSwapped(nodeIndex, parentIndex) {
+        if(!this._heap[parentIndex]) return false;
+        const parentValue = this._heap[parentIndex][this._config.baseProperty];
+        const nodeValue = this._heap[nodeIndex][this._config.baseProperty];
+        return this._isMinHeap ? parentValue > nodeValue : parentValue < nodeValue;
+    }
+
+
 
 
     /**
