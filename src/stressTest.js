@@ -1,6 +1,8 @@
 import Queue from './Queue';
+import getUsers from './factory';
 
 let heapLogs = '';
+const baseProperty = 'salary';
 
 
 /**
@@ -13,21 +15,22 @@ function generator () {
     let queue;
     while (true) {
 
-        queue = getFreshQueue();
         const minHeap = getRandomBoolean();
+        queue = getFreshQueue({minHeap, baseProperty});
+
 
         //check if the binary heap has been properly built
         if(!checkHeap(queue, minHeap)) break;
 
 
         // check insertion into the heap
-        queue = getFreshQueue();
-        queue.enqueue(getRandomArray());
+        queue = getFreshQueue({minHeap, baseProperty});
+        queue.enqueue(getUsers(getRandom(10)));
         if(!checkHeap(queue, minHeap)) break;
 
 
         // checking removal from the queue
-        queue = getFreshQueue();
+        queue = getFreshQueue({minHeap, baseProperty});
         const el = queue.dequeue();
         if(!checkHeap(queue, minHeap)) break;
         if(!checkMinEl(queue, el, minHeap)) break;
@@ -35,22 +38,25 @@ function generator () {
 
 
         // stress testing of queue with a naive implementation
-        queue = getFreshQueue(minHeap);
-        const naiveQueue = queue.getInitialArray().sort((a,b) => {
+        queue = getFreshQueue({minHeap, baseProperty});
+        const naiveQueue = queue._initialBasePropertyRow.sort((a,b) => {
             if(minHeap) return a - b;
             return b - a;
         });
-        console.log('COMPARING QUEUES, OK');
+
         if(!compareImplementations([...naiveQueue], queue)){
             console.log(heapLogs);
             console.log(`NAIVE: ${naiveQueue}
-                         QUEUE : ${queue.getHeap()}`);
+                         QUEUE : ${queue._sortedBasePropertyRow}`);
             break;
         }
+        console.log(queue.heap);
+        console.log(`COMPARING QUEUES, OK. Queue : ${queue._sortedBasePropertyRow}`);
 
         heapLogs = '';
     }
 }
+
 
 
 /**
@@ -62,11 +68,11 @@ function generator () {
 const compareImplementations = (naive, fast) => {
     let equalQueues = true;
     for (let i = 0; i < naive.length; i++) {
-        let naiveEl = naive.shift();
-        let fastEl  = fast.dequeue();
+        let naiveEl = parseInt(naive.shift());
+        let fastEl  = parseInt(fast.dequeue()[baseProperty]);
         if (naiveEl !== fastEl) {
             heapLogs = `WRONG ANSWER!!!
-                Element from binary heap: ${fastEl}
+                Element from binary heap: ${fastEl[baseProperty]}
                 Naive implementation element: ${naiveEl} :`;
             equalQueues = false;
         }
@@ -82,7 +88,7 @@ const compareImplementations = (naive, fast) => {
  * @returns {number}
  */
 const getRandom = threshold => {
-    return Math.floor(Math.random() * threshold + 1);
+    return Math.floor(Math.random() * threshold + 1) + 1;
 };
 
 
@@ -92,18 +98,18 @@ const getRandom = threshold => {
  * Gets a fresh randomly generated priority queue
  * @returns {PriorityQueue}
  */
-const getFreshQueue = (base) => {
-    return new Queue(getRandomArray(), base);
+const getFreshQueue = config => {
+    const users = getUsers(getRandom(50));
+    return new Queue(users, config);
 };
 
 
 
 /**
- *
  * @returns {boolean}
  */
 const getRandomBoolean = () => {
-    return Math.floor(Math.random()) > 0.5;
+    return Math.random() > 0.5;
 };
 
 
@@ -125,24 +131,32 @@ const getRandomArray = () => {
  * @returns {boolean}
  */
 const checkHeap = (queue, minHeap) => {
-    const heap = queue.getHeap();
+    const heap = queue._sortedBasePropertyRow;
     let isHeap = true;
 
     heap.forEach((node, i) => {
         let parent = parentNode(i);
-        if (minHeap && heap[parent] > node && parent >= 0) isHeap = false;
-        if (!minHeap && heap[parent] < node && parent >= 0) isHeap = false;
-        heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
+        if (minHeap && heap[parent] > node && parent >= 0) {
+            heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
         HEAP: ${heap}`;
+            isHeap = false;
+        }
+        if (!minHeap && heap[parent] < node && parent >= 0) {
+            heapLogs = `Node ${node} on index ${i} has illegal parent ${heap[parent]} at index ${parent} \n
+        HEAP: ${heap}`;
+            isHeap = false;
+        }
+
     });
 
     if(isHeap) {
         console.log('Checking heap, OK');
-        console.log(`HEAP: ${queue.getHeap()}`);
+        console.log(`HEAP: ${queue.heap}`);
     } else {
         console.log(`
                 WRONG ANSWER,
-                HEAP: ${queue.getHeap()}
+                HEAP: ${queue.sortedBasePropertyRow}
+                HEAP TYPE : ${queue.isMinHeap() ? 'min-heap' : 'max-heap'}, ${minHeap ? 'min-heap' : 'max-heap'}
                 LOGS : ${heapLogs}
             `);
     }
@@ -151,26 +165,29 @@ const checkHeap = (queue, minHeap) => {
 };
 
 
+
 /**
  * Checks whether or not there is a member with less priority then a given element in a given queue
  * @param queue
  * @param el
+ * @param minHeap
  * @returns {boolean}
  */
 const checkMinEl = (queue, el, minHeap) => {
     let isMin = true;
     if(minHeap) {
-        queue.getHeap().forEach(member => {
+        queue._sortedBasePropertyRow.forEach(member => {
             if(member < el) isMin = false;
         });
     }
     if(!minHeap) {
-        queue.getHeap().forEach(member => {
+        queue._sortedBasePropertyRow.forEach(member => {
             if(member > el) isMin = false;
         });
     }
     return isMin;
 };
+
 
 
 /**
