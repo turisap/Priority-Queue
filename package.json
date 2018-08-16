@@ -4,7 +4,7 @@
   "description": "A priority queue data structure which can accept arrays of ",
   "main": "PriorityQueueFacade.js",
   "scripts": {
-    "build": "webpack --env.development --mode=development"
+    "watch": "webpack --env.development --mode=development"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,9 @@
     "webpack-cli": "^3.1.0"
   },
   "dependencies": {
+    "babel-plugin-transform-builtin-extend": "^1.1.2",
     "dotenv": "^6.0.0",
-    "json-loader": "^0.5.7"
+    "json-loader": "^0.5.7",
+    "uuid": "^3.3.2"
   }
 }
