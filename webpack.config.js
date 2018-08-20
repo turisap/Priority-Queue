@@ -1,19 +1,23 @@
 const path = require('path');
 
 module.exports = (env = {}) => {
+    const inProduction = env.production;
+    const loaders = ['babel-loader'];
+
+    if(!inProduction) loaders.push('eslint-loader');
 
     return {
         entry: ['babel-polyfill', './index.js'],
         output: {
             path: path.resolve(__dirname, './dist'),
-            filename: 'b.js'
+            filename: 'build.js'
         },
         module: {
             rules: [
                 {
                     test: /\.js$/,
                     exclude: /node_modules/,
-                    use: ["babel-loader", 'eslint-loader']
+                    use: loaders
                 },
 
             ],
@@ -23,6 +27,6 @@ module.exports = (env = {}) => {
             child_process : "empty",
             process : true
         },
-        watch : true
+        watch : !inProduction
     }
 };

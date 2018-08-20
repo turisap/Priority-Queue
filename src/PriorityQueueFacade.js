@@ -20,7 +20,7 @@ class PriorityQueueFacade {
     enqueue(values) {
         values.forEach(v => {
             this.queue.binaryTree.push(v);
-            this.queue.siftUp(this.queue.size() - 1)
+            this.queue.siftUp(this.queue.size() - 1);
         });
     }
 
@@ -60,4 +60,5 @@ class PriorityQueueFacade {
     }
 }
 
-export default PriorityQueueFacade;
+//export default PriorityQueueFacade;
+module.exports = PriorityQueueFacade;

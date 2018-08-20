@@ -4,7 +4,8 @@
   "description": "A priority queue data structure which can accept arrays of ",
   "main": "PriorityQueueFacade.js",
   "scripts": {
-    "watch": "webpack --env.development --mode=development"
+    "watch": "webpack --env.development --mode=development",
+    "build": "webpack --env.production --mode=production"
   },
   "repository": {
     "type": "git",
