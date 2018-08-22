@@ -4,7 +4,6 @@ module.exports = (env = {}) => {
     const inProduction = env.production;
     const loaders = ['babel-loader'];
     const entry = inProduction ? './src/PriorityQueueFacade.js' : './index.js';
-    console.log("ENTRY: ", entry);
 
     if(!inProduction) loaders.push('eslint-loader');
 
@@ -14,8 +13,8 @@ module.exports = (env = {}) => {
             path: path.resolve(__dirname, './dist'),
             filename: 'build.js',
             library: 'priorityQueue',
-            libraryTarget: 'commonjs',
-            umdNamedDefine: true
+            libraryExport: "default",
+            libraryTarget: 'commonjs2',
         },
         module: {
             rules: [
