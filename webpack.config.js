@@ -7,14 +7,11 @@ module.exports = (env = {}) => {
 
     if(!inProduction) loaders.push('eslint-loader');
 
-    return {
+    const config = {
         entry: ['babel-polyfill', entry],
         output: {
             path: path.resolve(__dirname, './dist'),
             filename: 'build.js',
-            library: 'priorityQueue',
-            libraryExport: "default",
-            libraryTarget: 'commonjs2',
         },
         module: {
             rules: [
@@ -32,5 +29,13 @@ module.exports = (env = {}) => {
             process : true
         },
         watch : true
+    };
+
+    if(inProduction) {
+        config.output.library = 'priorityQueue';
+        config.output.libraryExport = 'default';
+        config.output.libraryTarget = 'commonjs2';
     }
+
+    return config;
 };
