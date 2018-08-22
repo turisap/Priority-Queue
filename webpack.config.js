@@ -3,14 +3,19 @@ const path = require('path');
 module.exports = (env = {}) => {
     const inProduction = env.production;
     const loaders = ['babel-loader'];
+    const entry = inProduction ? './src/PriorityQueueFacade.js' : './index.js';
+    console.log("ENTRY: ", entry);
 
     if(!inProduction) loaders.push('eslint-loader');
 
     return {
-        entry: ['babel-polyfill', './index.js'],
+        entry: ['babel-polyfill', entry],
         output: {
             path: path.resolve(__dirname, './dist'),
-            filename: 'build.js'
+            filename: 'build.js',
+            library: 'priorityQueue',
+            libraryTarget: 'commonjs',
+            umdNamedDefine: true
         },
         module: {
             rules: [
@@ -27,6 +32,6 @@ module.exports = (env = {}) => {
             child_process : "empty",
             process : true
         },
-        watch : !inProduction
+        watch : true
     }
 };

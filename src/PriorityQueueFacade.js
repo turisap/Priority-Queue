@@ -60,5 +60,5 @@ class PriorityQueueFacade {
     }
 }
 
-//export default PriorityQueueFacade;
-module.exports = PriorityQueueFacade;
+export default PriorityQueueFacade;
+//module.exports = PriorityQueueFacade;
