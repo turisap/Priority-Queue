@@ -5,7 +5,7 @@ A JavaScript implementation of priority queue data structure which accepts an ar
 Clone this repo and run `npm install` in the root directory.
 
 ## Usage
-To compile a production build run `npm run build`. It creates `build.js` in `dist` directory. You can import it as follows:
+To compile a production build run `npm run build` in the root directory. It creates `build.js` in `dist` directory. You can import it as follows:
 
 `const Queue = require('./build.js');`
 
@@ -28,9 +28,9 @@ const example = {
 }
 ```
 
-you can specify `id` or `age` as a base property and your data will be sorted accordingly.
+you can specify `id` or `age` as a base property and your data will be sorted accordingly. It should be an integer.
 
-`minHeap` sets the type of heap. If set to `true`, it will create a min-heap queue (members with the lowest priority first out). If set to `false`, it will create
+`minHeap` sets the type of a binary tree. If set to `true`, it will create a min-heap queue (members with the lowest priority first out). If set to `false`, it will create
 a max-heap queue, so, consequently, will take members with the highest priority out first.
 
 You can create a new instance now:
