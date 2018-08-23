@@ -11,7 +11,8 @@ To compile a production build run `npm run build`. It creates `build.js` in `dis
 
 then you would need to set configuration object for your data structure:
 
-```const config = {
+```
+const config = {
     baseProperty: 'id',
     minHeap : true
 }
@@ -19,7 +20,8 @@ then you would need to set configuration object for your data structure:
 
 `baseProperty` sets a property which the data structure will use to sort your data. For instance, if you have objects like
 
-``` const example = {
+```
+const example = {
     id : 12345,
     name : 'Kirill',
     age  : 18
@@ -33,39 +35,46 @@ a max-heap queue, so, consequently, will take members with the highest priority 
 
 You can create a new instance now:
 
-```const q = new Queue(initialValues, config);
+```
+const q = new Queue(initialValues, config);
 ```
 where `initialValues` is an array of objects and can be empty.
 
 ## API
 There are six point at public API:
 
-```enqueue(values)
+```
+enqueue(values)
 ```
 
 Adds new value(s) to the data structure and sorts it in accordance with their priorities. `Values` can be a single objects or an array of objects.
 
-```dequeue()
+```
+dequeue()
 ```
 
 Removes the member with the highest/lowest priority from the data structure, resorts it and returns the element.
 
-```peek()
+```
+peek()
 ```
 
 Returns the member with the highest/lowest priority without removing it from the data structure.
 
-```clear()
+```
+clear()
 ```
 
 Sets the data structure to an empty array
 
-```size()
+```
+size()
 ```
 
 Returns the number of members in the data structure.
 
-```isEmpty()
+```
+isEmpty()
 ```
 
 Returns `true` if there is no members in the data structure and `false` otherwise
