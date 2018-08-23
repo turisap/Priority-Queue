@@ -28,7 +28,7 @@ module.exports = (env = {}) => {
             child_process : "empty",
             process : true
         },
-        watch : true
+        watch : !inProduction
     };
 
     if(inProduction) {
