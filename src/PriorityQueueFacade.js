@@ -61,4 +61,3 @@ class PriorityQueueFacade {
 }
 
 export default PriorityQueueFacade;
-//module.exports = PriorityQueueFacade;
