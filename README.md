@@ -42,7 +42,7 @@ const q = new Queue(initialValues, config);
 where `initialValues` is an array of objects and can be empty.
 
 ## API
-There are six point at public API:
+There are six points at public API:
 
 ```
 enqueue(values)
